@@ -120,9 +120,26 @@ export default class Controller {
 	 * @param {!boolean} completed Desired completed state
 	 */
 	toggleCompleted(id, completed) {
-		this.store.update({id, completed}, () => {
-			this.view.setItemComplete(id, completed);
-		});
+		if (completed) {
+			navigator.geolocation.getCurrentPosition(
+				({coords}) => {
+					const position = { longitude: coords.longitude, latitude: coords.latitude };
+					this.store.update({id, completed, position}, () => {
+						this.view.setItemComplete(id, completed);
+					});
+				},
+				(error) => {
+					console.error({message:'something wrong', error});
+					this.store.update({id, completed}, () => {
+						this.view.setItemComplete(id, completed);
+					});
+				}
+			)
+		} else {
+			this.store.update({id, completed, position: undefined}, () => {
+				this.view.setItemComplete(id, completed);
+			});
+		}
 	}
 
 	/**
