@@ -4,6 +4,16 @@ import Template from './template';
 import Store from './store';
 import View from './view';
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
+}
+
 const store = new Store('todos-vanilla-es6');
 
 const template = new Template();

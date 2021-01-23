@@ -12,6 +12,7 @@
     "webpack-cli": "^4.4.0",
     "copy-webpack-plugin": "6.2.1",
     "html-webpack-plugin": "^4.5.1",
-    "http-server": "^0.12.3"
+    "http-server": "^0.12.3",
+    "workbox-webpack-plugin": "^6.0.2"
   }
 }
