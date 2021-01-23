@@ -51,6 +51,10 @@ export default class View {
 		this.$todoList.innerHTML = this.template.itemList(items);
 	}
 
+	showItem(item) {
+		this.$todoList.innerHTML = this.template.itemDetails(item);
+	}
+
 	/**
 	 * Remove an item from the view.
 	 *
@@ -178,6 +182,12 @@ export default class View {
 	bindToggleAll(handler) {
 		$on(this.$toggleAll, 'click', ({target}) => {
 			handler(target.checked);
+		});
+	}
+
+	bindDetailsItem(handler) {
+		$delegate(this.$todoList, '.details', 'click', ({target}) => {
+			handler(_itemId(target));
 		});
 	}
 

@@ -14,6 +14,7 @@ export default class Controller {
 		view.bindAddItem(this.addItem.bind(this));
 		view.bindEditItemSave(this.editItemSave.bind(this));
 		view.bindEditItemCancel(this.editItemCancel.bind(this));
+		view.bindDetailsItem(this.detailsItem.bind(this));
 		view.bindRemoveItem(this.removeItem.bind(this));
 		view.bindToggleItem((id, completed) => {
 			this.toggleCompleted(id, completed);
@@ -29,13 +30,18 @@ export default class Controller {
 	/**
 	 * Set and render the active route.
 	 *
-	 * @param {string} raw '' | '#/' | '#/active' | '#/completed'
+	 * @param {string} raw '' | '#/' | '#/active' | '#/completed' | '#/item/{id}'
 	 */
 	setView(raw) {
 		const route = raw.replace(/^#\//, '');
+		
 		this._activeRoute = route;
-		this._filter();
-		this.view.updateFilterButtons(route);
+		if (!route.startsWith('item')) {
+			this._filter();
+			this.view.updateFilterButtons(route);
+		} else {
+			this._showDetails();
+		}
 	}
 
 	/**
@@ -80,6 +86,12 @@ export default class Controller {
 			const title = data[0].title;
 			this.view.editItemDone(id, title);
 		});
+	}
+
+	detailsItem(id) {
+		const route = `#/item/${id}`
+		this.setView(route);
+		history.pushState(null, `Todo #${id} - Details`, route);
 	}
 
 	/**
@@ -153,6 +165,15 @@ export default class Controller {
 			this.view.setCompleteAllCheckbox(completed === total);
 			this.view.setMainVisibility(total);
 		});
+
+		this._lastActiveRoute = route;
+	}
+
+	_showDetails() {
+		const route = this._activeRoute;
+		const [, id] = route.split('/');
+		this.store.find({ id: +id }, ([item]) => this.view.showItem(item));
+		this.view.setMainVisibility(true);
 
 		this._lastActiveRoute = route;
 	}

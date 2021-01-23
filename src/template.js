@@ -22,9 +22,22 @@ export default class Template {
 	<div class="view">
 		<input class="toggle" type="checkbox" ${item.completed ? 'checked' : ''}>
 		<label>${escapeForHTML(item.title)}</label>
+		<button class="details">🔗</button>
 		<button class="destroy"></button>
 	</div>
 </li>`, '');
+	}
+
+	itemDetails(item) {
+		console.log(item)
+		return `<li data-id="${item.id}"${item.completed ? ' class="completed"' : ''}>
+		<div class="view">
+			<input class="toggle" type="checkbox" ${item.completed ? 'checked' : ''}>
+			<label>${escapeForHTML(item.title)}</label>
+			<button class="details">🔗</button>
+			<button class="destroy"></button>
+		</div>
+	</li>`
 	}
 
 	/**
