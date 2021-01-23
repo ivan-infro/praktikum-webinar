@@ -120,7 +120,7 @@ export default class Controller {
 	 * @param {!boolean} completed Desired completed state
 	 */
 	toggleCompleted(id, completed) {
-		if (completed) {
+		if (completed && ('geolocation' in navigator)) {
 			navigator.geolocation.getCurrentPosition(
 				({coords}) => {
 					const position = { longitude: coords.longitude, latitude: coords.latitude };
