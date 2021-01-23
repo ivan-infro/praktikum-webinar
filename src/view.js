@@ -18,8 +18,13 @@ export default class View {
 		this.$main = qs('.main');
 		this.$toggleAll = qs('.toggle-all');
 		this.$newTodo = qs('.new-todo');
-		$delegate(this.$todoList, 'li label', 'dblclick', ({target}) => {
-			this.editItem(target);
+		$delegate(this.$todoList, 'li label', 'pointerdown', ({target}) => {
+			if (this._prevClickedElement === target) {
+				this._prevClickedElement = undefined;
+				this.editItem(target);
+			} else {
+				this._prevClickedElement = target;
+			}
 		});
 	}
 
@@ -39,7 +44,9 @@ export default class View {
 
 		input.value = target.innerText;
 		listItem.appendChild(input);
-		input.focus();
+		setTimeout(() => {
+			input.focus();
+		}, 0);
 	}
 
 	/**
