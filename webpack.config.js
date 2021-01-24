@@ -9,6 +9,7 @@ module.exports = {
       patterns: [
         'node_modules/todomvc-app-css/index.css',
         { from: 'icons/192.png', to: './apple-touch-icon.png' },
+        { from: './icons/', to: './icons/' },
         'manifest.json'
       ]
     }),
